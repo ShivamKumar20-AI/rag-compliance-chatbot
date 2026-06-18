@@ -3,7 +3,7 @@
 A RAG-based (Retrieval-Augmented Generation) chatbot for querying AI compliance documents using LangChain, FAISS, and Groq LLM with a Streamlit web UI.
 
 ## Live Demo
-🔗 [Try it here](YOUR_STREAMLIT_URL)
+🔗 [Try it here](rag-compliance-chatbot.streamlit.app/)
 
 ## Documents Indexed
 - 📄 EU AI Act (Regulation EU 2024/1689)
