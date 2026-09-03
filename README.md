@@ -35,3 +35,13 @@ pip install -r requirements.txt
 ```
 
 Add your Groq API key to a `.env` file:
+
+
+## Security and Responsible AI Considerations
+
+- Uses public EU AI Act and NIST CSF 2.0 documentation only.
+- Designed as an informational portfolio prototype, not legal or compliance advice.
+- Provides source references so users can verify relevant material.
+- Does not intentionally collect or use real personal data.
+- Future improvements: authentication, access controls, prompt-injection testing,
+  output monitoring and evaluation of response quality.
