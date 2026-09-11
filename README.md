@@ -14,7 +14,7 @@ A RAG-based (Retrieval-Augmented Generation) chatbot for querying AI compliance 
 - **LangChain** — RAG pipeline and document loading
 - **FAISS** — Vector similarity search
 - **HuggingFace** — Sentence embeddings (all-MiniLM-L6-v2)
-- **Groq** — LLM inference (llama-3.3-70b-versatile)
+- **Groq** — LLM inference (openai/gpt-oss-120b)
 - **Streamlit** — Web UI
 - **PyPDF** — PDF text extraction
 

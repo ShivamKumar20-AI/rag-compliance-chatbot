@@ -1,0 +1,4 @@
+[client]
+# Never render Python tracebacks in the browser; they expose server paths
+# and dependency versions to anyone using the app.
+showErrorDetails = "none"
