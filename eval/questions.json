@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "question": "What is the maximum administrative fine for using a prohibited AI practice?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "EUR 35 000 000"
+  },
+  {
+    "id": 2,
+    "question": "Which AI practices are banned outright by the Act?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "subliminal techniques beyond a person's consciousness"
+  },
+  {
+    "id": 3,
+    "question": "From what date do the rules for high-risk AI systems generally apply?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "shall apply from 2 August 2026"
+  },
+  {
+    "id": 4,
+    "question": "What must a provider's quality management system include?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "a strategy for regulatory compliance"
+  },
+  {
+    "id": 5,
+    "question": "What must users be told when they interact with a chatbot?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "interacting with an AI system"
+  },
+  {
+    "id": 6,
+    "question": "What computing threshold presumes a general-purpose model has high-impact capabilities?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "floating point operations"
+  },
+  {
+    "id": 7,
+    "question": "How does the Act define a provider of an AI system?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "develops an AI system or a general-purpose AI model"
+  },
+  {
+    "id": 8,
+    "question": "What human oversight must high-risk AI systems allow?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "effectively overseen by natural persons"
+  },
+  {
+    "id": 9,
+    "question": "What data governance practices apply to training and validation data sets?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "data governance and management practices"
+  },
+  {
+    "id": 10,
+    "question": "What fine applies for supplying incorrect information to authorities?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "EUR 7 500 000"
+  },
+  {
+    "id": 11,
+    "question": "What must a deployer do before using a high-risk system, regarding fundamental rights?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "fundamental rights impact assessment"
+  },
+  {
+    "id": 12,
+    "question": "What record-keeping or logging must high-risk AI systems support?",
+    "source": "docs/eu-ai-act.pdf",
+    "answer_phrase": "automatic recording of events"
+  },
+  {
+    "id": 13,
+    "question": "What are the four core functions of the AI Risk Management Framework?",
+    "source": "docs/NIST.AI.100-1.pdf",
+    "answer_phrase": "GOVERN, MAP, MEASURE"
+  },
+  {
+    "id": 14,
+    "question": "What characteristics make an AI system trustworthy?",
+    "source": "docs/NIST.AI.100-1.pdf",
+    "answer_phrase": "valid and reliable"
+  },
+  {
+    "id": 15,
+    "question": "How does NIST distinguish explainability from interpretability?",
+    "source": "docs/NIST.AI.100-1.pdf",
+    "answer_phrase": "Explainability refers to"
+  },
+  {
+    "id": 16,
+    "question": "How does the AI RMF define an AI system?",
+    "source": "docs/NIST.AI.100-1.pdf",
+    "answer_phrase": "engineered or machine-based system"
+  },
+  {
+    "id": 17,
+    "question": "What kinds of harm does the framework say AI can cause?",
+    "source": "docs/NIST.AI.100-1.pdf",
+    "answer_phrase": "harms to people"
+  },
+  {
+    "id": 18,
+    "question": "What is systemic bias according to NIST?",
+    "source": "docs/NIST.AI.100-1.pdf",
+    "answer_phrase": "systemic bias"
+  },
+  {
+    "id": 19,
+    "question": "What does it mean for an AI system to be resilient or secure?",
+    "source": "docs/NIST.AI.100-1.pdf",
+    "answer_phrase": "secure and resilient"
+  },
+  {
+    "id": 20,
+    "question": "What are the six functions of CSF 2.0?",
+    "source": "docs/NIST.CSWP.29.pdf",
+    "answer_phrase": "Govern, Identify, Protect, Detect, Respond"
+  },
+  {
+    "id": 21,
+    "question": "What is an Organizational Profile in the CSF?",
+    "source": "docs/NIST.CSWP.29.pdf",
+    "answer_phrase": "Organizational Profile"
+  },
+  {
+    "id": 22,
+    "question": "What are the CSF implementation tiers?",
+    "source": "docs/NIST.CSWP.29.pdf",
+    "answer_phrase": "Tier 1: Partial"
+  },
+  {
+    "id": 23,
+    "question": "What does the Govern function cover?",
+    "source": "docs/NIST.CSWP.29.pdf",
+    "answer_phrase": "Organizational Context"
+  },
+  {
+    "id": 24,
+    "question": "How does the CSF handle cybersecurity supply chain risk management?",
+    "source": "docs/NIST.CSWP.29.pdf",
+    "answer_phrase": "Cybersecurity Supply Chain Risk Management"
+  },
+  {
+    "id": 25,
+    "question": "What is a Target Profile?",
+    "source": "docs/NIST.CSWP.29.pdf",
+    "answer_phrase": "Target Profile"
+  }
+]
