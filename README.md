@@ -13,6 +13,7 @@ A RAG-based (Retrieval-Augmented Generation) chatbot for querying AI compliance 
 ## Tech Stack
 - **LangChain** — RAG pipeline and document loading
 - **FAISS** — Vector similarity search
+- **rank_bm25** — Keyword search, fused with FAISS results (hybrid retrieval)
 - **HuggingFace** — Sentence embeddings (all-MiniLM-L6-v2)
 - **Groq** — LLM inference (openai/gpt-oss-120b)
 - **Streamlit** — Web UI
@@ -22,8 +23,8 @@ A RAG-based (Retrieval-Augmented Generation) chatbot for querying AI compliance 
 1. PDFs are loaded and cleaned to fix formatting issues
 2. Text is split into chunks and embedded using HuggingFace
 3. Chunks are stored in a FAISS vector index
-4. User queries are matched against the index
-5. Relevant chunks are passed to Groq LLM to generate an answer
+4. A query is matched two ways: FAISS embedding search and BM25 keyword search, merged by reciprocal rank fusion
+5. The top 6 chunks, labelled with document and page, are passed to the Groq LLM, which is asked to cite them
 
 ## Run Locally
 ```bash
@@ -41,18 +42,24 @@ Add your Groq API key to a `.env` file:
 
 `evaluate_retrieval.py` measures retrieval quality on 25 questions (`eval/questions.json`) across the three documents. Each question names the source PDF and an exact phrase containing the answer; a question is a hit at k if any of the top-k retrieved chunks contains that phrase. It does not call the LLM, so no API key is needed.
 
-| Index | Hit@1 | Hit@4 | Hit@8 | MRR |
+| Pipeline | Hit@1 | Hit@4 | Hit@6 | MRR |
 |---|---|---|---|---|
-| Original text cleaning | 20% | 44% | 56% | 0.301 |
-| Fixed text cleaning (current) | 48% | 72% | 72% | 0.567 |
+| Original text cleaning, dense retrieval | 20% | 44% | n/a | 0.301 |
+| Fixed text cleaning, dense retrieval | 48% | 72% | 72% | 0.567 |
+| Fixed cleaning, hybrid retrieval (**current, k=6**) | 60% | 68% | **84%** | 0.669 |
 
-The first run showed that the original cleaning step removed single spaces between lowercase letters, turning text into strings like `purposessetoutinthatpointonly`. Fixing it raised Hit@4 from 44% to 72%.
+Two changes produced these gains:
 
-Remaining weaknesses: questions about specific numbers and dates (fine amounts, application dates) and questions that match the CSF table of contents or glossary instead of the relevant section. Hit@8 equals Hit@4, so a larger k will not fix this. Hybrid keyword plus vector retrieval is the likely next step. This evaluation covers retrieval only, not answer quality.
+1. **Text cleaning.** The original step removed single spaces between lowercase letters, turning text into strings like `purposessetoutinthatpointonly`. Fixing it raised Hit@4 from 44% to 72%.
+2. **Hybrid retrieval.** `retrieval.py` merges FAISS embedding search with BM25 keyword search using reciprocal rank fusion, and the app passes 6 passages to the model. Hit@6 rises from 72% (dense) to 84%, and the right passage is ranked first more often (Hit@1 48% to 60%). At k=4 hybrid is one question behind dense, so the gain comes from k=6, not from fusion alone.
+
+Remaining weaknesses: questions whose answer is a specific number or date that the question does not repeat (fine amounts, application dates) and questions about CSF structure, where the table of contents competes with the real section. This measures retrieval only, not answer quality: the LLM step is not scored.
 
 ```bash
-python evaluate_retrieval.py                    # current pipeline
-python evaluate_retrieval.py --cleaning legacy  # original cleaning, for comparison
+python evaluate_retrieval.py                          # dense retrieval
+python evaluate_retrieval.py --retriever hybrid       # current pipeline
+python evaluate_retrieval.py --cleaning legacy        # original cleaning, for comparison
+pytest                                                # unit tests (no model downloads)
 ```
 
 ## Security and Responsible AI Considerations

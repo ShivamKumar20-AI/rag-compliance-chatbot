@@ -2,20 +2,13 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-import re
+from text_cleaning import clean_text
 
 PDF_PATHS = [
     "docs/eu-ai-act.pdf",
     "docs/NIST.AI.100-1.pdf",
     "docs/NIST.CSWP.29.pdf"
 ]
-
-def clean_text(text):
-    # Collapse line breaks and repeated whitespace only. An earlier version also
-    # removed single spaces between lowercase letters, which glued words together
-    # ("theuseofbiometric...") and cut retrieval hit@4 from 72% to 44% (see
-    # evaluate_retrieval.py).
-    return re.sub(r'\s+', ' ', text).strip()
 
 def ingest():
     docs = []

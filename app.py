@@ -4,7 +4,8 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
-from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables import RunnableLambda, RunnablePassthrough
+from retrieval import HybridRetriever, format_docs
 from langchain_core.output_parsers import StrOutputParser
 
 load_dotenv()
@@ -22,12 +23,15 @@ def load_chain():
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     vectorstore = FAISS.load_local("vectorstore", embeddings,
                                    allow_dangerous_deserialization=True)
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
+    # Hybrid (embeddings + BM25) retrieval of 6 passages: 84% hit rate vs 72% for
+    # dense top-4 on the 25-question set in eval/ (see README).
+    retriever = HybridRetriever(vectorstore, k=6)
     llm = ChatGroq(model_name=MODEL_NAME, temperature=0)
 
     prompt = PromptTemplate.from_template("""
-You are a compliance assistant. Use the context below to answer the question.
-If you don't know the answer, say you don't know.
+You are a compliance assistant. Use only the context below to answer the question.
+Cite the document and page for each claim, for example (eu-ai-act.pdf, page 52).
+If the context does not contain the answer, say you don't know.
 
 Context: {context}
 
@@ -36,7 +40,7 @@ Question: {question}
 Answer:""")
 
     chain = (
-        {"context": retriever, "question": RunnablePassthrough()}
+        {"context": RunnableLambda(retriever.invoke) | format_docs, "question": RunnablePassthrough()}
         | prompt
         | llm
         | StrOutputParser()
@@ -63,4 +67,4 @@ if query:
         st.write(result)
         with st.expander("Sources"):
             for doc in sources:
-                st.write(f"- {doc.metadata.get('source', 'Unknown')} (page {doc.metadata.get('page', '?')})")
+                st.write(f"- {doc.metadata.get('source', 'Unknown')} (page {doc.metadata.get('page_label', doc.metadata.get('page', '?'))})")

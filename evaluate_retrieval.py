@@ -8,6 +8,7 @@ not call the LLM, so it needs no API key.
 
     python evaluate_retrieval.py                  # production cleaning (ingest.clean_text)
     python evaluate_retrieval.py --cleaning legacy  # the original regex that removed spaces
+    python evaluate_retrieval.py --retriever hybrid # dense + BM25 with reciprocal rank fusion
 """
 import argparse
 import json
@@ -19,8 +20,9 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from ingest import PDF_PATHS, clean_text
+from retrieval import HybridRetriever
 
-KS = (1, 4, 8)
+KS = (1, 4, 6, 8)
 
 
 def legacy_clean_text(text):
@@ -48,18 +50,20 @@ def build_index(cleaner):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cleaning", choices=["production", "legacy"], default="production")
+    ap.add_argument("--retriever", choices=["dense", "hybrid"], default="dense")
     args = ap.parse_args()
     cleaner = clean_text if args.cleaning == "production" else legacy_clean_text
 
     questions = json.load(open("eval/questions.json"))
     store, n_chunks = build_index(cleaner)
-    print(f"Cleaning: {args.cleaning} | chunks: {n_chunks} | questions: {len(questions)}\n")
+    print(f"Cleaning: {args.cleaning} | retriever: {args.retriever} | chunks: {n_chunks} | questions: {len(questions)}\n")
+    hybrid = HybridRetriever(store, k=max(KS)) if args.retriever == "hybrid" else None
 
     hits = {k: 0 for k in KS}
     rr = 0.0
     misses = []
     for q in questions:
-        results = store.similarity_search(q["question"], k=max(KS))
+        results = hybrid.invoke(q["question"]) if hybrid else store.similarity_search(q["question"], k=max(KS))
         gold = norm(q["answer_phrase"])
         rank = next(
             (i + 1 for i, d in enumerate(results)
