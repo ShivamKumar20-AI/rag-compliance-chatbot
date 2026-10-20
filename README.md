@@ -75,8 +75,8 @@ pytest                                                # unit tests (no model dow
 - The search index contains a pickle file, which can run code if it is swapped for a malicious one.
   `ingest.py` records SHA-256 checksums in `vectorstore/checksums.json`, and the app refuses to
   load the index if the files no longer match.
-- Dependencies are pinned to exact versions (the versions a fresh install resolved on 20 October 2026).
-  Their own dependencies are not pinned yet; a lock file would be the next step.
+- Dependencies are not pinned. I tried exact pins on 20 October 2026 and the Streamlit Cloud build failed, so I
+  reverted them. Next step: work out a pinned set in a clean environment that matches Streamlit Cloud.
 - Errors show a generic message; only the error type and question length are logged, not the question.
 - Prompt injection: two basic attempts on the live app were resisted (see the threat model report),
   but this is not a systematic test.
