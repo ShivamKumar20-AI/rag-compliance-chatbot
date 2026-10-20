@@ -64,9 +64,21 @@ pytest                                                # unit tests (no model dow
 
 ## Security and Responsible AI Considerations
 
-- Uses public EU AI Act and NIST CSF 2.0 documentation only.
+- Uses public EU AI Act and NIST documentation only.
 - Designed as an informational portfolio prototype, not legal or compliance advice.
 - Provides source references so users can verify relevant material.
-- Does not intentionally collect or use real personal data.
-- Future improvements: authentication, access controls, prompt-injection testing,
+- Does not intentionally collect or use real personal data. The app tells users that questions
+  are sent to Groq, an outside service, and asks them not to enter personal or confidential information.
+- Questions are limited to 1,000 characters.
+- Rate limits: 5 questions a minute per browser session and 30 a minute across all visitors
+  of the running app. Neither is per IP address or account.
+- The search index contains a pickle file, which can run code if it is swapped for a malicious one.
+  `ingest.py` records SHA-256 checksums in `vectorstore/checksums.json`, and the app refuses to
+  load the index if the files no longer match.
+- Dependencies are pinned to exact versions (the versions a fresh install resolved on 20 October 2026).
+  Their own dependencies are not pinned yet; a lock file would be the next step.
+- Errors show a generic message; only the error type and question length are logged, not the question.
+- Prompt injection: two basic attempts on the live app were resisted (see the threat model report),
+  but this is not a systematic test.
+- Future improvements: authentication, per-IP limits, a larger prompt-injection test set,
   output monitoring and evaluation of response quality.

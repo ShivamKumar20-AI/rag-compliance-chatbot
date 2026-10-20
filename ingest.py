@@ -3,6 +3,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from text_cleaning import clean_text
+from integrity import write_checksums
 
 PDF_PATHS = [
     "docs/eu-ai-act.pdf",
@@ -28,6 +29,7 @@ def ingest():
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     vectorstore = FAISS.from_documents(chunks, embeddings)
     vectorstore.save_local("vectorstore")
+    write_checksums("vectorstore")  # lets the app confirm the index is unchanged before loading it
     print(f"Done! Vectorstore saved with {len(chunks)} chunks.")
 
 if __name__ == "__main__":
